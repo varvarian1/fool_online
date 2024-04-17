@@ -1,4 +1,5 @@
-from app.views import app
+from app.users import app
+from app.rooms import app
 from app import db
 
 

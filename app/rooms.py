@@ -1,5 +1,6 @@
 from flask import Flask, g, request, jsonify
 from app.models import Users, db
+from . game import Game
 from app import app
 
 #TODO: скорее всего, нужно будет создать класс Game и использовать его уже в логике самой игры
@@ -31,7 +32,7 @@ class Player(Users):
 		self.cards = []
 
 
-@app.route('rooms/createRoom', methods=['POST'])
+@app.route('/rooms/createRoom', methods=['POST'])
 def createRoom():
 	data = request.get_json()
 	if data is None:
@@ -51,12 +52,17 @@ def createRoom():
 	newRoom.participants.append(player)
 	newRoom.setTrumpCard()
 
-	return jsonify({'message': 'Комната была успешно создана!', 'room': newRoom}), 200
+	return jsonify({'message': 'Комната была успешно создана!'}), 200
 
 
-@app.route('rooms/joinToRoom', methods=['POST'])
+@app.route('/rooms/joinToRoom', methods=['POST'])
 def joinToRoom():
 	#логика присоединения к комнате 
 	#request: {email: userEmail}
+ 
+ 	# запуск класса Game from geme.py
+  
+	game = Game("room_name") # позже введем такую переменную
+	game.play() # Сам запуск игры
 	return jsonify({'message': 'пользователь успешно присоединился!'}), 200
 

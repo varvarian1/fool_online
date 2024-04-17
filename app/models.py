@@ -10,4 +10,3 @@ class Users(db.Model):
     count_deposit = db.Column(db.Integer, default=0) #общая сумма депозитов
     count_withdrawal = db.Column(db.Integer, default=0) #общая сумма выводов
 
-
