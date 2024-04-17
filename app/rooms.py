@@ -1,27 +1,12 @@
 from flask import Flask, g, request, jsonify
-from app.models import Users, db
+from app.models import Room, Users, db
 from . game import Game
 from app import app
 
-#TODO: скорее всего, нужно будет создать класс Game и использовать его уже в логике самой игры
-
-
-class Room:
-	# P.S.
-	# * get user from chache on frontend:
-	#	AsyncStorage.getItem('@app:session').then(token => {
-	#		// use token
-	#	});
- 
-	def __init__(self, roomName, numberOfCards) -> None:
-		self.roomName = roomName
-		self.participants = [] #players
-		self.numberOfCards = numberOfCards
-
-	def setTrumpCard(self) -> None:
+	
+def setTrumpCard(self) -> None:
 		# TODO: определение козырной карты
-		return
-  
+		return 
 
 class Player(Users):
 	def setCards(self, cards):
@@ -47,11 +32,12 @@ def createRoom():
 
 
 	user = Users.query.filter_by(email=createrEmail).first()
-	player = Player(user) #создаем instance игрока на основе пользователя
-	newRoom = Room(roomName=roomName, numberOfCards=numberOfCards)
-	newRoom.participants.append(player)
-	newRoom.setTrumpCard()
-
+	newRoom = Room(name=roomName, numberOfCards=numberOfCards)
+	#player = Player(user) #создаем instance игрока на основе пользователя
+	# newRoom.participants.append(player)
+	#newRoom.setTrumpCard()
+	db.session.add(newRoom)
+	db.session.commit()
 	return jsonify({'message': 'Комната была успешно создана!'}), 200
 
 
