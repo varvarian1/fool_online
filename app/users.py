@@ -1,6 +1,7 @@
+import json
 import random
 import string
-from flask import Flask, g, request, jsonify
+from flask import request, jsonify
 from app.models import Users, db
 from app import app
 
@@ -35,8 +36,12 @@ def registration():
 
         db.session.add(new_user)
         db.session.commit()
-
-        return jsonify({'message': 'User created successfully'}), 201
+        return jsonify({
+            'id': new_user.id, 
+            'email': new_user.email, 
+            'username': new_user.username, 
+            'password': new_user.password 
+        }), 201
 
    
     
@@ -51,6 +56,7 @@ def getUsers():
             'email': user.email,
             'password': user.password,
             'username': user.username,
+            'room_id': user.room_id
         }
         user_list.append(user_data)
         
@@ -70,4 +76,49 @@ def login():
     if not user or user.password != password:
         return jsonify({'message': 'Invalid email or password'}), 401
     
-    return jsonify({'message': 'Login successful'})
+    return jsonify({
+        'id': user.id, 
+        'email': user.email, 
+        'username': user.username, 
+        'password': user.password 
+    })
+
+@app.route("/users/changeUsername", methods=['PATCH'])
+def changeUsername():
+    data = request.get_json()
+    if not data:
+        return jsonify({'message': 'no body'})
+    
+    userId = data['userId']
+    username = data['username']
+
+    user = Users.query.filter_by(id=userId)
+    user.update({'username': username})
+    db.session.commit()
+    
+    userEnitity = user.first()
+    return jsonify({
+        'id': userEnitity.id, 
+        'email': userEnitity.email, 
+        'username': userEnitity.username, 
+        'password': userEnitity.password 
+    })
+
+@app.route("/users/deleteAll", methods=['DELETE'])
+def deleteAllUsers():
+	Users.query.delete()
+	db.session.commit()
+	return jsonify({'message': 'deleted'})
+
+@app.route("/users/deleteById", methods=['DELETE'])
+def deleteUserById():
+    data = request.get_json()
+
+    if not data:
+        return jsonify({'message': 'no body'}), 400
+    
+    userId = data['userId']
+    Users.query.filter_by(id=userId).delete()
+
+    db.session.commit()
+    return jsonify({'message': 'User successfuly deleted'})
