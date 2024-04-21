@@ -40,15 +40,23 @@ def createRoom():
 	db.session.commit()
 	return jsonify({'message': 'Комната была успешно создана!'}), 200
 
+# тут заход в комнату
 
 @app.route('/rooms/joinToRoom', methods=['POST'])
 def joinToRoom():
 	#логика присоединения к комнате 
 	#request: {email: userEmail}
- 
- 	# запуск класса Game from geme.py
-  
-	game = Game("room_name") # позже введем такую переменную
-	game.play() # Сам запуск игры
+
 	return jsonify({'message': 'пользователь успешно присоединился!'}), 200
 
+# тут запуск игры 
+
+@app.route('/rooms/joinToRoom/startGame', methods=['POST'])
+def startGame():
+
+	# запуск класса Game from geme.py
+
+	game = Game("room_name") # позже введем такую переменную
+	game.play() # Сам запуск игры
+
+	return jsonify({'message': 'Game start'}), 200
