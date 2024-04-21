@@ -9,33 +9,33 @@ class Game:
         # Дополнительная логика и инициализация игры
 
     def play(self):
-        while not self.is_game_over():
+        while not self.isGameOver():
             # Логика игрового цикла
-            self.make_moves()
+            self.makeMoves()
             time.sleep(1)
             print(1)
         
-        winner = self.determine_winner()
-        self.end_game(winner)
+        winner = self.determineWinner()
+        self.endGame(winner)
         print(0)
 
-    def is_game_over(self):
+    def isGameOver(self):
         # Логика, определяющая условие окончания игры
         # Например, когда достигнут определенный счет или когда у одного из игроков закончились карты
         return False  # Замените это на свою логику окончания игры
 
-    def make_moves(self):
+    def makeMoves(self):
         # Логика, связанная с совершением ходов в игре
         # Каждый игрок делает свой ход в соответствии с правилами игры
         pass
 
-    def determine_winner(self):
+    def determineWinner(self):
         # Логика определения победителя
         # Например, по подсчету очков или по выполнению определенного условия
         # Замените это на свою логику определения победителя
         pass
 
-    def end_game(self, winner):
+    def endGame(self, winner):
         # Логика завершения игры
         # Объявление победителя и выполнение необходимых действий
         pass
